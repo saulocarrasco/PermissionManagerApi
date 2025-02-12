@@ -26,7 +26,7 @@ namespace PermissionsManager.Persistence.Repositories
             if (offset < 0) offset = null;
             if (limit < 0) limit = null;
 
-            var result = await DataContext.Set<TEntity>().Skip(offset ?? defaultOffset).Take(limit ?? defaultLimit).ToListAsync();
+            var result = await DataContext.Set<TEntity>().OrderByDescending(x=>x.Id).Skip(offset ?? defaultOffset).Take(limit ?? defaultLimit).ToListAsync();
 
             return (result, DataContext.Set<TEntity>().Count());
         }
