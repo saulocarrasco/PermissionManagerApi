@@ -1,3 +1,5 @@
+
+
 using Elastic.Clients.Elasticsearch;
 using Elastic.Transport;
 using FluentValidation;
@@ -9,6 +11,18 @@ using PermissionsManager.Persistence;
 using PermissionsManager.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+
+const string CORS_CONFIG_NAME = "_myCors";
+
+builder.Services.AddCors(opts =>
+{
+    opts.AddPolicy(CORS_CONFIG_NAME, p =>
+    {
+        p.WithOrigins("http://localhost:3000")
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
+});
 
 // Add services to the container.
 builder.Services.AddDbContext<DataContext>(opt =>
@@ -47,6 +61,8 @@ using (var scope = app.Services.CreateScope())
         return;
     }
 }
+
+app.UseCors(CORS_CONFIG_NAME);
 
 // Configure the HTTP request pipeline.
 
